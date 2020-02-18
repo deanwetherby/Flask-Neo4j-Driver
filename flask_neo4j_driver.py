@@ -20,7 +20,7 @@ class Neo4jDriver(object):
     def teardown(self, exception):
         ctx = _app_ctx_stack.top
         if hasattr(ctx, self.APP_CTX_NAME):
-            ctx.graphdb.close()
+            ctx.neo4j_driver.close()
 
     def create_driver(self):
         uri = current_app.config['NEO4J_URI']
@@ -35,8 +35,8 @@ class Neo4jDriver(object):
         ctx = _app_ctx_stack.top
         if ctx is not None:
             if not hasattr(ctx, self.APP_CTX_NAME):
-                ctx.graphdb = self.create_driver()
-            return ctx.graphdb
+                ctx.neo4j_driver = self.create_driver()
+            return ctx.neo4j_driver
 
     def session(self):
         return self.driver.session()
